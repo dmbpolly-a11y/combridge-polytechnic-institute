@@ -110,26 +110,52 @@ const INIT_AUTH_USERS = {
 // ── UI COMPONENTS ─────────────────────────────────────────────────────────────
 function PortalHeader({ icon, color, title, subtitle, username, onOpenSettings, onLogout }) {
     return (
-        <div className="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4 p-3 rounded-3" style={{ background: color + '15', borderLeft: `5px solid ${color}` }}>
-            <div className="d-flex align-items-center gap-3">
-                <div className="rounded-circle d-flex align-items-center justify-content-center text-white flex-shrink-0" style={{ width: 52, height: 52, background: color }}>
+        <div className="mb-4">
+            {/* Logo Header Bar with Green Theme */}
+            <div className="d-flex align-items-center justify-content-between p-3 bg-white border-bottom shadow-sm">
+                <div className="d-flex align-items-center gap-3">
+                    <img
+                        src="/images/logocom.png"
+                        alt="Combridge Institute Logo"
+                        style={{
+                            height: '60px',
+                            width: 'auto',
+                            objectFit: 'contain',
+                            backgroundColor: '#ffffff',
+                            borderRadius: '8px',
+                            padding: '4px',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                        }}
+                    />
+                    <div>
+                        <h6 className="fw-bold text-uppercase mb-0" style={{ color: '#006837', fontSize: '0.95rem', letterSpacing: '0.5px' }}>
+                            COMBRIDGE INSTITUTE
+                        </h6>
+                        <small className="text-muted fw-semibold d-block">Management Portal System</small>
+                    </div>
+                </div>
+                <div className="d-flex align-items-center gap-2">
+                    <span className="badge px-3 py-2 fw-normal" style={{ background: '#006837', fontSize: '0.8rem' }}>
+                        <i className="fas fa-user-circle me-1 text-white"></i> <strong className="text-white">{username}</strong>
+                    </span>
+                    <button className="btn btn-sm btn-outline-success fw-semibold" onClick={onOpenSettings} title="Change Username & Password">
+                        <i className="fas fa-cog me-1"></i> Settings
+                    </button>
+                    <button className="btn btn-sm btn-danger fw-semibold" onClick={onLogout} title="Logout of Portal">
+                        <i className="fas fa-sign-out-alt me-1"></i> Logout
+                    </button>
+                </div>
+            </div>
+            
+            {/* Portal Title Bar */}
+            <div className="d-flex align-items-center gap-3 p-3 rounded-3 mt-3" style={{ background: '#006837' + '15', borderLeft: `5px solid #006837` }}>
+                <div className="rounded-circle d-flex align-items-center justify-content-center text-white flex-shrink-0" style={{ width: 52, height: 52, background: '#006837' }}>
                     <i className={`${icon} fa-lg`}></i>
                 </div>
                 <div>
-                    <h4 className="fw-bold mb-0" style={{ color }}>{title}</h4>
+                    <h4 className="fw-bold mb-0" style={{ color: '#006837' }}>{title}</h4>
                     <p className="text-muted mb-0 small">{subtitle}</p>
                 </div>
-            </div>
-            <div className="d-flex align-items-center gap-2">
-                <span className="badge bg-dark px-3 py-2 fw-normal" style={{ fontSize: '0.8rem' }}>
-                    <i className="fas fa-user-circle me-1 text-success"></i> User: <strong>{username}</strong>
-                </span>
-                <button className="btn btn-sm btn-outline-dark fw-semibold" onClick={onOpenSettings} title="Change Username & Password">
-                    <i className="fas fa-cog me-1"></i> Profile Settings
-                </button>
-                <button className="btn btn-sm btn-danger fw-semibold" onClick={onLogout} title="Logout of Portal">
-                    <i className="fas fa-sign-out-alt me-1"></i> Logout
-                </button>
             </div>
         </div>
     );
