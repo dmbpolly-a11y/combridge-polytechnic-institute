@@ -1,3 +1,4 @@
+// Combridge Institute App Router - Production Deploy 2026
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Suspense } from 'react';
 import { AuthProvider } from './context/AuthContext';
