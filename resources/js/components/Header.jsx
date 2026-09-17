@@ -111,6 +111,15 @@ export default function Header() {
                     </div>
                 </div>
             </header>
+
+            {/* Green Marquee Section - "Enriching The Future and Potentials" */}
+            <section className="green-marquee-section">
+                <div className="marquee-container">
+                    <div className="marquee-text">
+                        ✨ Enriching The Future and Potentials ✨ Enriching The Future and Potentials ✨ Enriching The Future and Potentials ✨
+                    </div>
+                </div>
+            </section>
         </>
     );
 }

@@ -122,7 +122,7 @@ function PortalHeader({ icon, color, title, subtitle, username, onOpenSettings, 
             </div>
             <div className="d-flex align-items-center gap-2">
                 <span className="badge bg-dark px-3 py-2 fw-normal" style={{ fontSize: '0.8rem' }}>
-                    <i className="fas fa-user-circle me-1 text-warning"></i> User: <strong>{username}</strong>
+                    <i className="fas fa-user-circle me-1 text-success"></i> User: <strong>{username}</strong>
                 </span>
                 <button className="btn btn-sm btn-outline-dark fw-semibold" onClick={onOpenSettings} title="Change Username & Password">
                     <i className="fas fa-cog me-1"></i> Profile Settings
@@ -176,8 +176,8 @@ function PortalLogin({ portal, authInfo, onLogin, onQuickLogin }) {
 
                 <div className="card-body p-4">
                     {/* Default Credentials Notice */}
-                    <div className="alert alert-warning border-warning d-flex align-items-start gap-2 mb-4 py-2 px-3 small rounded-3">
-                        <i className="fas fa-key text-warning fa-lg mt-1"></i>
+                    <div className="alert alert-success border-success d-flex align-items-start gap-2 mb-4 py-2 px-3 small rounded-3">
+                        <i className="fas fa-key text-success fa-lg mt-1"></i>
                         <div>
                             <strong>Default Credentials:</strong><br />
                             Username: <code className="bg-white px-1 py-0.5 rounded border text-dark fw-bold">cpiss.ac.ug</code><br />
@@ -231,7 +231,7 @@ function PortalLogin({ portal, authInfo, onLogin, onQuickLogin }) {
                             className="btn btn-outline-secondary btn-sm w-100 fw-semibold"
                             onClick={() => { setUnameInput(authInfo.username); setPassInput(authInfo.password); onQuickLogin(); }}
                         >
-                            <i className="fas fa-bolt text-warning me-1"></i> Quick Sign-In (Auto-Fill)
+                            <i className="fas fa-bolt text-success me-1"></i> Quick Sign-In (Auto-Fill)
                         </button>
                     </form>
                 </div>
@@ -544,7 +544,7 @@ export default function CombridgeManage() {
                         <h6 className="fw-bold mb-0 text-white text-uppercase" style={{ letterSpacing: '0.5px', fontSize: '0.9rem' }}>
                             Combridge
                         </h6>
-                        <small className="text-warning fw-semibold" style={{ fontSize: '0.72rem' }}>Management Portals</small>
+                        <small className="text-success fw-semibold" style={{ fontSize: '0.72rem' }}>Management Portals</small>
                     </div>
                 </div>
 
@@ -552,7 +552,7 @@ export default function CombridgeManage() {
                 <div className="px-3 py-2 m-2 rounded-3" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}>
                     <div className="d-flex align-items-center justify-content-between">
                         <div className="d-flex align-items-center gap-2 overflow-hidden">
-                            <i className="fas fa-user-circle text-warning fa-lg"></i>
+                            <i className="fas fa-user-circle text-success fa-lg"></i>
                             <div className="text-truncate">
                                 <small className="text-white fw-bold d-block text-truncate" style={{ fontSize: '0.8rem' }}>
                                     {curAuthInfo.username}
@@ -570,7 +570,7 @@ export default function CombridgeManage() {
                         onClick={() => { navigate('/combridge-manage'); setMobileSidebarOpen(false); }}
                         className={`portal-nav-item ${activePortal === 'overview' ? 'active' : ''}`}
                     >
-                        <i className="fas fa-th-large text-warning" style={{ width: 20 }}></i>
+                        <i className="fas fa-th-large text-success" style={{ width: 20 }}></i>
                         <span className="flex-grow-1">All Portals Overview</span>
                     </button>
 
@@ -597,9 +597,9 @@ export default function CombridgeManage() {
                     <div className="portal-nav-section-title">Quick Switch</div>
                     <button
                         onClick={() => { navigate('/'); setMobileSidebarOpen(false); }}
-                        className="portal-nav-item text-warning"
+                        className="portal-nav-item text-success"
                     >
-                        <i className="fas fa-globe text-warning" style={{ width: 20 }}></i>
+                        <i className="fas fa-globe text-success" style={{ width: 20 }}></i>
                         <span className="flex-grow-1">Main Public Website</span>
                         <i className="fas fa-external-link-alt text-white-50" style={{ fontSize: '0.7rem' }}></i>
                     </button>
@@ -703,7 +703,7 @@ export default function CombridgeManage() {
                             className="btn btn-sm btn-outline-success fw-semibold px-3 py-1.5 shadow-sm d-flex align-items-center gap-1.5"
                             title="Go to public website homepage"
                         >
-                            <i className="fas fa-external-link-alt text-warning"></i>
+                            <i className="fas fa-external-link-alt text-success"></i>
                             <span className="d-none d-sm-inline">Public Website</span>
                         </button>
                     </div>
@@ -1036,7 +1036,7 @@ function DeanPortal({ students, exams, updateExamStatus, username, onOpenSetting
                         <tbody>
                             {filteredExams.map(ex => (
                                 <tr key={ex.id}>
-                                    <td><code className="fw-bold text-warning">{ex.code}</code></td>
+                                    <td><code className="fw-bold text-success">{ex.code}</code></td>
                                     <td className="fw-bold">{ex.course}</td>
                                     <td className="small">{ex.setter}</td>
                                     <td className="small">{ex.examDate}</td>
@@ -1441,7 +1441,7 @@ function LibraryPortal({ books, borrowings, entries, bookForm, setBookForm, addB
                                             <td><code>{en.admNo}</code></td>
                                             <td className="fw-bold">{en.name}</td>
                                             <td className="small">{en.timeIn}</td>
-                                            <td className="small">{en.timeOut || <span className="text-warning fw-bold">In Library</span>}</td>
+                                            <td className="small">{en.timeOut || <span className="text-success fw-bold">In Library</span>}</td>
                                             <td>
                                                 {!en.timeOut && (
                                                     <button className="btn btn-sm btn-outline-primary" onClick={()=>exitEntry(en.id)}><i className="fas fa-sign-out-alt me-1"></i>Clock Exit</button>

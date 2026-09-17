@@ -8,7 +8,7 @@ export default function Footer() {
     const year = new Date().getFullYear();
 
     return (
-        <footer className="site-footer text-white pt-5 pb-3 footer-animate" style={{ background: '#0a1d13', borderTop: '4px solid #006837' }}>
+        <footer className="site-footer text-white pt-5 pb-3 footer-animate" style={{ background: '#006837', borderTop: '4px solid #ffdd57' }}>
             <div className="container">
                 <div className="row g-4">
                     {/* Column 1: Brand & Logo */}

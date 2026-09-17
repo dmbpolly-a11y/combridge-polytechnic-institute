@@ -220,15 +220,6 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* ── Green Marquee Section - "Enriching The Future and Potentials" ──────────── */}
-            <section className="green-marquee-section">
-                <div className="marquee-container">
-                    <div className="marquee-text">
-                        ✨ Enriching The Future and Potentials ✨ Enriching The Future and Potentials ✨ Enriching The Future and Potentials ✨
-                    </div>
-                </div>
-            </section>
-
             {/* ── Official Contact Details Strip ─────────────────────────────────── */}
             <section className="py-3 text-white" style={{ background: '#006837', borderBottom: '3px solid #ffdd57' }}>
                 <div className="container">
