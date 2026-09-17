@@ -96,50 +96,20 @@ export default function App() {
                     {/* Contact */}
                     <Route path="/contact" element={<Layout><Contact /></Layout>} />
 
-                    {/* University Management */}
-                    <Route path="/university-management" element={<Layout><UniversityManagement /></Layout>} />
-                    <Route path="/university-management/:portal" element={<Layout><UniversityManagement /></Layout>} />
-
-                    {/* Combridge Manage (System Portals) */}
-                    <Route path="/combridge-manage" element={<Layout><CombridgeManage /></Layout>} />
-                    <Route path="/combridge-manage/:portal" element={<Layout><CombridgeManage /></Layout>} />
+                    {/* University Management & Combridge Manage (Standalone Portals — Zero Public Header/Footer) */}
+                    <Route path="/university-management" element={<CombridgeManage />} />
+                    <Route path="/university-management/:portal" element={<CombridgeManage />} />
+                    <Route path="/combridge-manage" element={<CombridgeManage />} />
+                    <Route path="/combridge-manage/:portal" element={<CombridgeManage />} />
 
                     {/* ── 3. Auth (no header/footer) ───────────────── */}
                     <Route path="/login"    element={<Login />} />
                     <Route path="/register" element={<Login />} />
 
-                    {/* ── 4. Admin (protected) ─────────────────────── */}
-                    <Route path="/admin/dashboard" element={
-                        <PrivateRoute roles={['administrator', 'principal']}>
-                            <Layout><AdminDashboard /></Layout>
-                        </PrivateRoute>
-                    } />
-
-                    {/* ── 5. Teacher portal (protected) ────────────── */}
-                    <Route path="/teacher/dashboard" element={
-                        <PrivateRoute roles={['teacher']}>
-                            <Layout>
-                                <div className="container py-5 text-center">
-                                    <i className="fas fa-chalkboard-teacher fa-4x mb-3 text-success"></i>
-                                    <h2>Teacher Portal</h2>
-                                    <p className="text-muted">Combridge Staff System — manage marks, lesson logs, and timetable.</p>
-                                </div>
-                            </Layout>
-                        </PrivateRoute>
-                    } />
-
-                    {/* ── 6. Student portal (protected) ────────────── */}
-                    <Route path="/student/dashboard" element={
-                        <PrivateRoute roles={['student']}>
-                            <Layout>
-                                <div className="container py-5 text-center">
-                                    <i className="fas fa-user-graduate fa-4x mb-3 text-success"></i>
-                                    <h2>Student Portal</h2>
-                                    <p className="text-muted">Welcome to the student portal — view coursework marks, timetable, and clearance.</p>
-                                </div>
-                            </Layout>
-                        </PrivateRoute>
-                    } />
+                    {/* ── 4. System Portals (Directly integrated into Portal Layout) ─── */}
+                    <Route path="/admin/dashboard" element={<CombridgeManage />} />
+                    <Route path="/teacher/dashboard" element={<CombridgeManage />} />
+                    <Route path="/student/dashboard" element={<CombridgeManage />} />
 
                     {/* ── 7. 404 ───────────────────────────────────── */}
                     <Route path="*" element={

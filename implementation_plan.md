@@ -74,4 +74,4 @@ Three changes: (1) Fix hero section — remove blue, make images full-width/full
 ## Verification
 - `npm run build` — 0 errors
 - `git push` — triggers Vercel auto-deploy
-- Live URL: https://combridge-polytechnic.vercel.app/combridge-manage
+- Live URL: https://combridge-vercel-app.vercel.app/combridge-manage

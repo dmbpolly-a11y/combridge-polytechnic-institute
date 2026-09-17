@@ -343,6 +343,8 @@ export default function CombridgeManage() {
     const [marks, setMarks]           = useState({});
     const [showSettings, setShowSettings] = useState(false);
     const [searchQuery, setSearchQuery]   = useState('');
+    const [sidebarOpen, setSidebarOpen]   = useState(true);
+    const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
     const notify = (msg) => { setToast(msg); setTimeout(() => setToast(''), 4500); };
 
@@ -520,77 +522,215 @@ export default function CombridgeManage() {
     };
 
     return (
-        <div style={{ minHeight: '100vh', background: '#f0f4f8' }}>
-            {/* Toast Notification */}
-            {toast && (
-                <div style={{ position:'fixed', top:20, right:20, zIndex:9999, background:'#006837', color:'#fff', padding:'12px 22px', borderRadius:10, fontWeight:600, boxShadow:'0 4px 20px rgba(0,0,0,0.25)', maxWidth:420, animation:'fadeInDown 0.3s ease' }}>
-                    {toast}
-                </div>
-            )}
-
-            {/* Profile Settings Modal */}
-            {showSettings && curPortalObj && (
-                <ProfileModal
-                    portal={curPortalObj}
-                    authInfo={curAuthInfo}
-                    onSave={(u, p) => updateCredentials(activePortal, u, p)}
-                    onClose={() => setShowSettings(false)}
+        <div className="portal-layout">
+            {/* Mobile Sidebar Backdrop */}
+            {mobileSidebarOpen && (
+                <div
+                    className="portal-sidebar-backdrop d-lg-none"
+                    onClick={() => setMobileSidebarOpen(false)}
                 />
             )}
 
-            {/* Page Header */}
-            <div className="py-4 text-white" style={{ background:'linear-gradient(135deg,#006837 0%,#004d28 100%)', borderBottom:'4px solid #ffdd57' }}>
-                <div className="container">
-                    <div className="d-flex align-items-center justify-content-between flex-wrap gap-3">
-                        <div className="d-flex align-items-center gap-3">
-                            <img src="/images/logocom.png" alt="Logo" style={{ height:54, borderRadius:6, background:'#fff', padding:4 }} />
-                            <div>
-                                <h2 className="fw-bold mb-0 text-white" style={{ fontSize:'clamp(1.2rem,3vw,1.8rem)' }}>
-                                    <i className="fas fa-th-large me-2 text-warning"></i>Combridge Manage
-                                </h2>
-                                <p className="mb-0 text-white-50 small">University Management System — Combridge Institute of Health Management Sciences</p>
+            {/* ── 1. PORTAL DASHBOARD ASIDE / SIDEBAR ────────────────── */}
+            <aside className={`portal-sidebar ${sidebarOpen ? '' : 'collapsed'} ${mobileSidebarOpen ? 'mobile-open' : ''}`}>
+                {/* Brand Header */}
+                <div className="portal-sidebar-header">
+                    <img
+                        src="/images/logocom.png"
+                        alt="Combridge Logo"
+                        style={{ height: 40, width: 'auto', backgroundColor: '#fff', borderRadius: 6, padding: 2 }}
+                    />
+                    <div className="overflow-hidden text-truncate">
+                        <h6 className="fw-bold mb-0 text-white text-uppercase" style={{ letterSpacing: '0.5px', fontSize: '0.9rem' }}>
+                            Combridge
+                        </h6>
+                        <small className="text-warning fw-semibold" style={{ fontSize: '0.72rem' }}>Management Portals</small>
+                    </div>
+                </div>
+
+                {/* Current User Pill */}
+                <div className="px-3 py-2 m-2 rounded-3" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div className="d-flex align-items-center justify-content-between">
+                        <div className="d-flex align-items-center gap-2 overflow-hidden">
+                            <i className="fas fa-user-circle text-warning fa-lg"></i>
+                            <div className="text-truncate">
+                                <small className="text-white fw-bold d-block text-truncate" style={{ fontSize: '0.8rem' }}>
+                                    {curAuthInfo.username}
+                                </small>
+                                <span className="badge bg-success py-0 px-1" style={{ fontSize: '0.65rem' }}>Active Session</span>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        {/* Search Bar across all portals */}
-                        <div className="d-none d-md-block" style={{ width: 280 }}>
+                {/* Sidebar Navigation Menu */}
+                <div className="portal-sidebar-nav">
+                    <div className="portal-nav-section-title">Navigation & Overview</div>
+                    <button
+                        onClick={() => { navigate('/combridge-manage'); setMobileSidebarOpen(false); }}
+                        className={`portal-nav-item ${activePortal === 'overview' ? 'active' : ''}`}
+                    >
+                        <i className="fas fa-th-large text-warning" style={{ width: 20 }}></i>
+                        <span className="flex-grow-1">All Portals Overview</span>
+                    </button>
+
+                    <div className="portal-nav-section-title">System Portals</div>
+                    {PORTALS.map(p => {
+                        const isLogged = authUsers[p.id]?.loggedIn;
+                        return (
+                            <button
+                                key={p.id}
+                                onClick={() => { navigate(`/combridge-manage/${p.id}`); setMobileSidebarOpen(false); }}
+                                className={`portal-nav-item ${activePortal === p.id ? 'active' : ''}`}
+                            >
+                                <i className={p.icon} style={{ color: p.color, width: 20 }}></i>
+                                <span className="flex-grow-1 text-truncate">{p.label}</span>
+                                {isLogged ? (
+                                    <span className="badge bg-success rounded-pill" style={{ fontSize: '0.65rem' }}>Online</span>
+                                ) : (
+                                    <i className="fas fa-lock text-white-50" style={{ fontSize: '0.7rem' }}></i>
+                                )}
+                            </button>
+                        );
+                    })}
+
+                    <div className="portal-nav-section-title">Quick Switch</div>
+                    <button
+                        onClick={() => { navigate('/'); setMobileSidebarOpen(false); }}
+                        className="portal-nav-item text-warning"
+                    >
+                        <i className="fas fa-globe text-warning" style={{ width: 20 }}></i>
+                        <span className="flex-grow-1">Main Public Website</span>
+                        <i className="fas fa-external-link-alt text-white-50" style={{ fontSize: '0.7rem' }}></i>
+                    </button>
+                </div>
+
+                {/* Sidebar Footer Controls */}
+                <div className="p-3 border-top border-secondary border-opacity-25" style={{ background: '#002010' }}>
+                    <div className="d-flex gap-2">
+                        {curPortalObj && (
+                            <button
+                                className="btn btn-sm btn-outline-light flex-grow-1 fw-semibold"
+                                style={{ fontSize: '0.78rem' }}
+                                onClick={() => setShowSettings(true)}
+                                title="Profile Settings"
+                            >
+                                <i className="fas fa-cog me-1"></i> Profile
+                            </button>
+                        )}
+                        <button
+                            onClick={() => navigate('/')}
+                            className="btn btn-sm btn-outline-warning fw-semibold"
+                            style={{ fontSize: '0.78rem' }}
+                            title="Exit to Public Website"
+                        >
+                            <i className="fas fa-home me-1"></i> Exit
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            {/* ── 2. MAIN PORTAL CONTENT AREA (Zero Public Header/Footer) ─── */}
+            <div className="portal-main-area">
+                {/* Top Portal Header Bar */}
+                <header className="portal-topbar">
+                    <div className="d-flex align-items-center gap-3">
+                        {/* Hamburger Button */}
+                        <button
+                            className="btn btn-sm btn-light border shadow-sm d-flex align-items-center justify-content-center"
+                            style={{ width: 38, height: 38, borderRadius: 8 }}
+                            onClick={() => {
+                                setSidebarOpen(!sidebarOpen);
+                                setMobileSidebarOpen(!mobileSidebarOpen);
+                            }}
+                            aria-label="Toggle Portal Sidebar"
+                            title="Toggle Dashboard Menu"
+                        >
+                            <i className="fas fa-bars text-success fa-lg"></i>
+                        </button>
+
+                        <div className="d-flex align-items-center gap-2">
+                            {curPortalObj ? (
+                                <>
+                                    <span
+                                        className="rounded-circle d-flex align-items-center justify-content-center text-white shadow-sm"
+                                        style={{ width: 34, height: 34, background: curPortalObj.color }}
+                                    >
+                                        <i className={`${curPortalObj.icon} fa-sm`}></i>
+                                    </span>
+                                    <div>
+                                        <h5 className="fw-bold mb-0 text-dark" style={{ fontSize: '1.05rem' }}>
+                                            {curPortalObj.label}
+                                        </h5>
+                                        <small className="text-muted d-none d-sm-inline" style={{ fontSize: '0.75rem' }}>
+                                            Combridge Management Dashboard
+                                        </small>
+                                    </div>
+                                </>
+                            ) : (
+                                <div>
+                                    <h5 className="fw-bold mb-0 text-success" style={{ fontSize: '1.05rem' }}>
+                                        <i className="fas fa-th-large me-2"></i>All System Portals
+                                    </h5>
+                                    <small className="text-muted d-none d-sm-inline" style={{ fontSize: '0.75rem' }}>
+                                        Combridge Centre for Polytechnic Studies & Health Sciences
+                                    </small>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="d-flex align-items-center gap-2">
+                        {/* Global Search inside Portal */}
+                        <div className="d-none d-md-block" style={{ width: 220 }}>
                             <div className="input-group input-group-sm">
-                                <span className="input-group-text bg-white border-0"><i className="fas fa-search text-muted"></i></span>
+                                <span className="input-group-text bg-light border-end-0">
+                                    <i className="fas fa-search text-muted"></i>
+                                </span>
                                 <input
                                     type="text"
-                                    className="form-control border-0"
+                                    className="form-control bg-light border-start-0"
                                     placeholder="Search records..."
                                     value={searchQuery}
                                     onChange={e => setSearchQuery(e.target.value)}
                                 />
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            {/* Portal Tab Bar */}
-            <div style={{ background:'#004d28', borderBottom:'2px solid rgba(255,255,255,0.1)', overflowX:'auto' }}>
-                <div className="container">
-                    <div className="d-flex gap-1 py-1" style={{ whiteSpace:'nowrap' }}>
-                        <button onClick={() => navigate('/combridge-manage')} style={{ background: activePortal==='overview'?'#ffdd57':'transparent', color: activePortal==='overview'?'#000':'#fff', border:'none', padding:'8px 14px', fontWeight:600, fontSize:'0.8rem', transition:'all 0.2s', cursor:'pointer', borderRadius:2 }}>
-                            <i className="fas fa-th me-1"></i>Overview
+                        {/* Back to Public Website shortcut button */}
+                        <button
+                            onClick={() => navigate('/')}
+                            className="btn btn-sm btn-outline-success fw-semibold px-3 py-1.5 shadow-sm d-flex align-items-center gap-1.5"
+                            title="Go to public website homepage"
+                        >
+                            <i className="fas fa-external-link-alt text-warning"></i>
+                            <span className="d-none d-sm-inline">Public Website</span>
                         </button>
-                        {PORTALS.map(p => {
-                            const isLogged = authUsers[p.id]?.loggedIn;
-                            return (
-                                <button key={p.id} onClick={() => navigate(`/combridge-manage/${p.id}`)}
-                                    style={{ background: activePortal===p.id?'#ffdd57':'transparent', color: activePortal===p.id?'#000':'#fff', border:'none', padding:'8px 14px', fontWeight:600, fontSize:'0.8rem', transition:'all 0.2s', cursor:'pointer', borderRadius:2 }}>
-                                    <i className={`${p.icon} me-1`}></i>{p.label} {isLogged ? <i className="fas fa-check-circle text-warning ms-1" style={{ fontSize: '0.7rem' }}></i> : null}
-                                </button>
-                            );
-                        })}
                     </div>
-                </div>
-            </div>
+                </header>
 
-            {/* Content */}
-            <div className="container py-4">{renderPortalContent()}</div>
+                {/* Toast Notification */}
+                {toast && (
+                    <div style={{ position:'fixed', top:70, right:20, zIndex:9999, background:'#006837', color:'#fff', padding:'12px 22px', borderRadius:10, fontWeight:600, boxShadow:'0 4px 20px rgba(0,0,0,0.25)', maxWidth:420, animation:'fadeInDown 0.3s ease' }}>
+                        {toast}
+                    </div>
+                )}
+
+                {/* Profile Settings Modal */}
+                {showSettings && curPortalObj && (
+                    <ProfileModal
+                        portal={curPortalObj}
+                        authInfo={curAuthInfo}
+                        onSave={(u, p) => updateCredentials(activePortal, u, p)}
+                        onClose={() => setShowSettings(false)}
+                    />
+                )}
+
+                {/* Portal Content Body */}
+                <main className="portal-body-content">
+                    {renderPortalContent()}
+                </main>
+            </div>
         </div>
     );
 }
