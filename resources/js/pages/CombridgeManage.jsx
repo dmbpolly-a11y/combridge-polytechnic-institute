@@ -190,11 +190,11 @@ function PortalLogin({ portal, authInfo, onLogin, onQuickLogin }) {
     };
 
     return (
-        <div className="d-flex justify-content-center align-items-center py-5">
+        <div className="d-flex justify-content-center align-items-center py-5" style={{ background: '#006837', minHeight: '100vh' }}>
             <div className="card border-0 shadow-lg rounded-4 overflow-hidden" style={{ maxWidth: 460, width: '100%' }}>
-                <div className="p-4 text-white text-center" style={{ background: portal.color }}>
+                <div className="p-4 text-white text-center" style={{ background: '#006837' }}>
                     <div className="rounded-circle d-inline-flex align-items-center justify-content-center bg-white mb-2 shadow" style={{ width: 64, height: 64 }}>
-                        <i className={`${portal.icon} fa-2x`} style={{ color: portal.color }}></i>
+                        <i className={`${portal.icon} fa-2x`} style={{ color: '#006837' }}></i>
                     </div>
                     <h4 className="fw-bold text-white mb-1">{portal.label} Access</h4>
                     <p className="text-white-50 small mb-0">Combridge Institute Portal Authentication</p>
@@ -248,7 +248,7 @@ function PortalLogin({ portal, authInfo, onLogin, onQuickLogin }) {
                             </div>
                         </div>
 
-                        <button type="submit" className="btn w-100 text-white fw-bold py-2 shadow-sm mb-2" style={{ background: portal.color }}>
+                        <button type="submit" className="btn w-100 text-white fw-bold py-2 shadow-sm mb-2" style={{ background: '#006837' }}>
                             <i className="fas fa-sign-in-alt me-2"></i> Log In to {portal.label}
                         </button>
 

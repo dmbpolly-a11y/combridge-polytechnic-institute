@@ -81,14 +81,14 @@ export default function Navbar() {
                     {/* COMBRIDGE MANAGE (Prominent Portal Link) */}
                     <li className={`nav-item dropdown ${activeDropdown === 'combridge-manage' ? 'show' : ''}`}>
                         <a
-                            className="nav-link dropdown-toggle text-dark fw-bold px-3 py-2 rounded-3 me-lg-2 my-1 my-lg-0 shadow-sm"
-                            style={{ background: '#ffdd57', border: '1px solid #eab308' }}
+                            className="nav-link dropdown-toggle fw-bold px-3 py-2 rounded-3 me-lg-2 my-1 my-lg-0 shadow-sm"
+                            style={{ background: '#006837', color: '#ffffff', border: '1px solid #005a2d' }}
                             href="/combridge-manage"
                             onClick={(e) => toggleDropdown('combridge-manage', e)}
                             role="button"
                             aria-expanded={activeDropdown === 'combridge-manage'}
                         >
-                            <i className="fas fa-cogs text-dark me-1"></i> Combridge Manage
+                            <i className="fas fa-cogs text-white me-1"></i> Combridge Manage
                         </a>
                         <ul className={`dropdown-menu ${activeDropdown === 'combridge-manage' ? 'show' : ''}`} style={{ minWidth: '280px' }}>
                             <li><h6 className="dropdown-header text-uppercase text-success fw-bold" style={{ fontSize: '0.75rem', letterSpacing: '1px' }}>System Portals</h6></li>
