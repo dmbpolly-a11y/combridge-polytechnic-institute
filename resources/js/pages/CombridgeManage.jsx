@@ -166,7 +166,7 @@ function PortalLogin({ portal, authInfo, onLogin, onQuickLogin }) {
     return (
         <div className="d-flex justify-content-center align-items-center py-5">
             <div className="card border-0 shadow-lg rounded-4 overflow-hidden" style={{ maxWidth: 460, width: '100%' }}>
-                <div className="p-4 text-white text-center" style={{ background: `linear-gradient(135deg, ${portal.color} 0%, #002b16 100%)` }}>
+                <div className="p-4 text-white text-center" style={{ background: portal.color }}>
                     <div className="rounded-circle d-inline-flex align-items-center justify-content-center bg-white mb-2 shadow" style={{ width: 64, height: 64 }}>
                         <i className={`${portal.icon} fa-2x`} style={{ color: portal.color }}></i>
                     </div>

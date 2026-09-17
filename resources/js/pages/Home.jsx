@@ -220,6 +220,15 @@ export default function Home() {
                 </div>
             </section>
 
+            {/* ── Green Marquee Section - "Enriching The Future and Potentials" ──────────── */}
+            <section className="green-marquee-section">
+                <div className="marquee-container">
+                    <div className="marquee-text">
+                        ✨ Enriching The Future and Potentials ✨ Enriching The Future and Potentials ✨ Enriching The Future and Potentials ✨
+                    </div>
+                </div>
+            </section>
+
             {/* ── Official Contact Details Strip ─────────────────────────────────── */}
             <section className="py-3 text-white" style={{ background: '#006837', borderBottom: '3px solid #ffdd57' }}>
                 <div className="container">
@@ -495,7 +504,7 @@ export default function Home() {
             </section>
 
             {/* ── 5. Call to Action Banner ───────────────── */}
-            <section className="py-5 text-white text-center" style={{ background: 'linear-gradient(135deg, #004d28 0%, #006837 100%)' }}>
+            <section className="py-5 text-white text-center" style={{ background: '#006837' }}>
                 <div className="container py-2">
                     <h2 className="fw-bold mb-3">Begin Your Professional Journey Today</h2>
                     <p className="lead opacity-90 mb-4" style={{ maxWidth: 700, margin: '0 auto' }}>

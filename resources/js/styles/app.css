@@ -820,3 +820,71 @@ main { flex: 1; }
 }
 
 
+
+
+/* ── Footer Animation (Ease In/Out) ─────────────────────── */
+.footer-animate {
+  animation: footerSlideIn 1s ease-in-out;
+}
+
+@keyframes footerSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Green Marquee Section ─────────────────────────────── */
+.green-marquee-section {
+  background: linear-gradient(135deg, #006837 0%, #28a745 100%);
+  padding: 20px 0;
+  border-top: 3px solid #ffdd57;
+  border-bottom: 3px solid #ffdd57;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 104, 55, 0.3);
+}
+
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+
+.marquee-text {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marqueeScroll 25s linear infinite;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+/* ── Portal Logo Only (No Header/Footer in Portals) ────── */
+.portal-logo-header {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  padding: 15px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-bottom: 3px solid #006837;
+}
+
+.portal-logo-header img {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+}
