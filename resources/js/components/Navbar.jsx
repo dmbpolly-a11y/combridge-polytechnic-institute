@@ -1,16 +1,28 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 /**
  * Main sticky navigation bar mirroring the University of Saint Joseph (usj.ac.ug) structure.
  * Includes multi-column mega dropdowns for About, Academics, Students, Admissions, and Research.
+ * High-contrast, easily visible, and responsive subpages.
  */
 export default function Navbar() {
     const { isAuthenticated, isAdmin, isTeacher, isStudent, logout } = useAuth();
     const [open, setOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState(null);
     const navigate = useNavigate();
+
+    // Close dropdowns on outside click
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (!e.target.closest('.main-nav')) {
+                setActiveDropdown(null);
+            }
+        };
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, []);
 
     const handleLogout = async () => {
         await logout();
@@ -23,11 +35,11 @@ export default function Navbar() {
     };
 
     const toggleDropdown = (name, e) => {
-        // For mobile click behavior
-        if (window.innerWidth < 992) {
+        if (e) {
             e.preventDefault();
-            setActiveDropdown(activeDropdown === name ? null : name);
+            e.stopPropagation();
         }
+        setActiveDropdown(prev => prev === name ? null : name);
     };
 
     const linkClass = ({ isActive }) =>
@@ -79,16 +91,48 @@ export default function Navbar() {
                             <i className="fas fa-cogs text-dark me-1"></i> Combridge Manage
                         </a>
                         <ul className={`dropdown-menu ${activeDropdown === 'combridge-manage' ? 'show' : ''}`} style={{ minWidth: '280px' }}>
-                            <li><h6 className="dropdown-header text-uppercase text-success fw-bold" style={{ fontSize: '0.72rem', letterSpacing: '1px' }}>System Portals</h6></li>
-                            <li><Link className="dropdown-item" to="/combridge-manage/admin" onClick={closeNav}><i className="fas fa-shield-alt me-2 text-danger"></i>Admin Portal</Link></li>
-                            <li><Link className="dropdown-item" to="/combridge-manage/academic-registrar" onClick={closeNav}><i className="fas fa-user-check me-2 text-primary"></i>Academic Registrar</Link></li>
-                            <li><Link className="dropdown-item" to="/combridge-manage/lecturer" onClick={closeNav}><i className="fas fa-chalkboard-teacher me-2 text-success"></i>Lecturer / Tutor Portal</Link></li>
-                            <li><Link className="dropdown-item" to="/combridge-manage/dean" onClick={closeNav}><i className="fas fa-graduation-cap me-2 text-warning"></i>Dean Clinical & Medicine</Link></li>
-                            <li><Link className="dropdown-item" to="/combridge-manage/deputy-registrar" onClick={closeNav}><i className="fas fa-user-tie me-2 text-info"></i>Deputy Academic Registrar</Link></li>
-                            <li><Link className="dropdown-item" to="/combridge-manage/bursar" onClick={closeNav}><i className="fas fa-coins me-2 text-success"></i>Bursar Portal</Link></li>
-                            <li><Link className="dropdown-item" to="/combridge-manage/library" onClick={closeNav}><i className="fas fa-book-reader me-2 text-primary"></i>Library Admin Portal</Link></li>
+                            <li><h6 className="dropdown-header text-uppercase text-success fw-bold" style={{ fontSize: '0.75rem', letterSpacing: '1px' }}>System Portals</h6></li>
+                            <li>
+                                <Link className="dropdown-item" to="/combridge-manage/admin" onClick={closeNav}>
+                                    <i className="fas fa-shield-alt me-2 text-danger"></i>Admin Portal
+                                </Link>
+                            </li>
+                            <li>
+                                <Link className="dropdown-item" to="/combridge-manage/academic-registrar" onClick={closeNav}>
+                                    <i className="fas fa-user-check me-2 text-primary"></i>Academic Registrar
+                                </Link>
+                            </li>
+                            <li>
+                                <Link className="dropdown-item" to="/combridge-manage/lecturer" onClick={closeNav}>
+                                    <i className="fas fa-chalkboard-teacher me-2 text-success"></i>Lecturer / Tutor Portal
+                                </Link>
+                            </li>
+                            <li>
+                                <Link className="dropdown-item" to="/combridge-manage/dean" onClick={closeNav}>
+                                    <i className="fas fa-graduation-cap me-2 text-warning"></i>Dean Clinical & Medicine
+                                </Link>
+                            </li>
+                            <li>
+                                <Link className="dropdown-item" to="/combridge-manage/deputy-registrar" onClick={closeNav}>
+                                    <i className="fas fa-user-tie me-2 text-info"></i>Deputy Academic Registrar
+                                </Link>
+                            </li>
+                            <li>
+                                <Link className="dropdown-item" to="/combridge-manage/bursar" onClick={closeNav}>
+                                    <i className="fas fa-coins me-2 text-success"></i>Bursar Portal
+                                </Link>
+                            </li>
+                            <li>
+                                <Link className="dropdown-item" to="/combridge-manage/library" onClick={closeNav}>
+                                    <i className="fas fa-book-reader me-2 text-primary"></i>Library Admin Portal
+                                </Link>
+                            </li>
                             <li><hr className="dropdown-divider" /></li>
-                            <li><Link className="dropdown-item fw-bold text-success" to="/combridge-manage" onClick={closeNav}><i className="fas fa-th-large me-2"></i>All Portals Dashboard</Link></li>
+                            <li>
+                                <Link className="dropdown-item fw-bold text-success" to="/combridge-manage" onClick={closeNav}>
+                                    <i className="fas fa-th-large me-2"></i>All Portals Dashboard
+                                </Link>
+                            </li>
                         </ul>
                     </li>
 
@@ -105,33 +149,59 @@ export default function Navbar() {
                         </a>
                         <div className={`dropdown-menu dropdown-mega ${activeDropdown === 'about' ? 'show' : ''}`}>
                             <div className="row g-3">
-                                <div className="col-lg-4">
+                                <div className="col-lg-4 col-12">
                                     <div className="dropdown-column-title">
-                                        <i className="fas fa-landmark me-1"></i> Background
+                                        <i className="fas fa-landmark me-2"></i> Background
                                     </div>
-                                    <Link className="dropdown-item" to="/about/mission-vision" onClick={closeNav}>Mission & Vision</Link>
-                                    <Link className="dropdown-item" to="/about/our-history" onClick={closeNav}>Our History</Link>
-                                    <Link className="dropdown-item" to="/about/anthem" onClick={closeNav}>Polytechnic Anthem</Link>
-                                    <Link className="dropdown-item" to="/about/rules-regulations" onClick={closeNav}>Rules & Regulations</Link>
+                                    <Link className="dropdown-item" to="/about/mission-vision" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Mission & Vision
+                                    </Link>
+                                    <Link className="dropdown-item" to="/about/our-history" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Our History
+                                    </Link>
+                                    <Link className="dropdown-item" to="/about/anthem" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Polytechnic Anthem
+                                    </Link>
+                                    <Link className="dropdown-item" to="/about/rules-regulations" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Rules & Regulations
+                                    </Link>
                                 </div>
-                                <div className="col-lg-4">
+                                <div className="col-lg-4 col-12">
                                     <div className="dropdown-column-title">
-                                        <i className="fas fa-balance-scale me-1"></i> Governance
+                                        <i className="fas fa-balance-scale me-2"></i> Governance
                                     </div>
-                                    <Link className="dropdown-item" to="/about/chancellor" onClick={closeNav}>Chancellor / Board Patron</Link>
-                                    <Link className="dropdown-item" to="/about/board-of-directors" onClick={closeNav}>Board of Trustees</Link>
-                                    <Link className="dropdown-item" to="/about/university-senate" onClick={closeNav}>Academic Senate</Link>
-                                    <Link className="dropdown-item" to="/about/university-council" onClick={closeNav}>Polytechnic Council</Link>
-                                    <Link className="dropdown-item" to="/about/university-policies" onClick={closeNav}>Institutional Policies</Link>
+                                    <Link className="dropdown-item" to="/about/chancellor" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Chancellor / Board Patron
+                                    </Link>
+                                    <Link className="dropdown-item" to="/about/board-of-directors" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Board of Trustees
+                                    </Link>
+                                    <Link className="dropdown-item" to="/about/university-senate" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Academic Senate
+                                    </Link>
+                                    <Link className="dropdown-item" to="/about/university-council" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Polytechnic Council
+                                    </Link>
+                                    <Link className="dropdown-item" to="/about/university-policies" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Institutional Policies
+                                    </Link>
                                 </div>
-                                <div className="col-lg-4">
+                                <div className="col-lg-4 col-12">
                                     <div className="dropdown-column-title">
-                                        <i className="fas fa-user-tie me-1"></i> Management
+                                        <i className="fas fa-user-tie me-2"></i> Management
                                     </div>
-                                    <Link className="dropdown-item" to="/about/vice-chancellor" onClick={closeNav}>Principal / Executive Head</Link>
-                                    <Link className="dropdown-item" to="/about/deputy-vice-chancellor" onClick={closeNav}>Deputy Principal</Link>
-                                    <Link className="dropdown-item" to="/about/academic-registrar" onClick={closeNav}>Academic Registrar</Link>
-                                    <Link className="dropdown-item" to="/about/library" onClick={closeNav}>Library Administration</Link>
+                                    <Link className="dropdown-item" to="/about/vice-chancellor" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Principal / Executive Head
+                                    </Link>
+                                    <Link className="dropdown-item" to="/about/deputy-vice-chancellor" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Deputy Principal
+                                    </Link>
+                                    <Link className="dropdown-item" to="/about/academic-registrar" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Academic Registrar
+                                    </Link>
+                                    <Link className="dropdown-item" to="/about/library" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Library Administration
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -150,28 +220,44 @@ export default function Navbar() {
                         </a>
                         <div className={`dropdown-menu dropdown-mega ${activeDropdown === 'academics' ? 'show' : ''}`}>
                             <div className="row g-3">
-                                <div className="col-lg-4">
+                                <div className="col-lg-4 col-12">
                                     <div className="dropdown-column-title">
-                                        <i className="fas fa-graduation-cap me-1"></i> Faculties & Schools
+                                        <i className="fas fa-graduation-cap me-2"></i> Faculties & Schools
                                     </div>
-                                    <Link className="dropdown-item" to="/academics/science-technology" onClick={closeNav}>Science & Technology</Link>
-                                    <Link className="dropdown-item" to="/academics/business-socialsciences" onClick={closeNav}>Business & Management</Link>
-                                    <Link className="dropdown-item" to="/academics/vocational-trades" onClick={closeNav}>Technical & Vocational Trades</Link>
+                                    <Link className="dropdown-item" to="/academics/science-technology" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Science & Technology
+                                    </Link>
+                                    <Link className="dropdown-item" to="/academics/business-socialsciences" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Business & Management
+                                    </Link>
+                                    <Link className="dropdown-item" to="/academics/vocational-trades" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Technical & Vocational
+                                    </Link>
                                 </div>
-                                <div className="col-lg-4">
+                                <div className="col-lg-4 col-12">
                                     <div className="dropdown-column-title">
-                                        <i className="fas fa-book-reader me-1"></i> Academic Resources
+                                        <i className="fas fa-book-reader me-2"></i> Academic Resources
                                     </div>
-                                    <Link className="dropdown-item" to="/academics/library" onClick={closeNav}>Polytechnic Library</Link>
-                                    <Link className="dropdown-item" to="/academics/elearning" onClick={closeNav}>E-Learning Portal</Link>
-                                    <Link className="dropdown-item" to="/academics/repository" onClick={closeNav}>Digital Repository</Link>
+                                    <Link className="dropdown-item" to="/academics/library" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Polytechnic Library
+                                    </Link>
+                                    <Link className="dropdown-item" to="/academics/elearning" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> E-Learning Portal
+                                    </Link>
+                                    <Link className="dropdown-item" to="/academics/repository" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Digital Repository
+                                    </Link>
                                 </div>
-                                <div className="col-lg-4">
+                                <div className="col-lg-4 col-12">
                                     <div className="dropdown-column-title">
-                                        <i className="fas fa-calendar-alt me-1"></i> Programs & Schedules
+                                        <i className="fas fa-calendar-alt me-2"></i> Programs & Schedules
                                     </div>
-                                    <Link className="dropdown-item" to="/academics/academic-calendar" onClick={closeNav}>Academic Calendar</Link>
-                                    <Link className="dropdown-item" to="/academics/timetable" onClick={closeNav}>Teaching Timetable</Link>
+                                    <Link className="dropdown-item" to="/academics/academic-calendar" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Academic Calendar
+                                    </Link>
+                                    <Link className="dropdown-item" to="/academics/timetable" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Teaching Timetable
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -188,39 +274,69 @@ export default function Navbar() {
                         >
                             Students
                         </a>
-                        <div className={`dropdown-menu dropdown-mega ${activeDropdown === 'students' ? 'show' : ''}`} style={{ maxWidth: '880px' }}>
+                        <div className={`dropdown-menu dropdown-mega dropdown-align-right ${activeDropdown === 'students' ? 'show' : ''}`} style={{ maxWidth: '860px' }}>
                             <div className="row g-3">
-                                <div className="col-lg-4">
+                                <div className="col-lg-4 col-12">
                                     <div className="dropdown-column-title">
-                                        <i className="fas fa-users me-1"></i> Student Life
+                                        <i className="fas fa-users me-2"></i> Student Life
                                     </div>
-                                    <Link className="dropdown-item" to="/students/life-at-campus" onClick={closeNav}>Life at Campus</Link>
-                                    <Link className="dropdown-item" to="/students/students-guild" onClick={closeNav}>Students Guild</Link>
-                                    <Link className="dropdown-item" to="/students/games-sports" onClick={closeNav}>Games & Sports</Link>
-                                    <Link className="dropdown-item" to="/students/student-union-clubs" onClick={closeNav}>Clubs & Societies</Link>
-                                    <Link className="dropdown-item" to="/students/rules-regulation" onClick={closeNav}>Code of Conduct</Link>
-                                    <Link className="dropdown-item" to="/students/alumni" onClick={closeNav}>Alumni Association</Link>
+                                    <Link className="dropdown-item" to="/students/life-at-campus" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Life at Campus
+                                    </Link>
+                                    <Link className="dropdown-item" to="/students/students-guild" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Students Guild
+                                    </Link>
+                                    <Link className="dropdown-item" to="/students/games-sports" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Games & Sports
+                                    </Link>
+                                    <Link className="dropdown-item" to="/students/student-union-clubs" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Clubs & Societies
+                                    </Link>
+                                    <Link className="dropdown-item" to="/students/rules-regulation" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Code of Conduct
+                                    </Link>
+                                    <Link className="dropdown-item" to="/students/alumni" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Alumni Association
+                                    </Link>
                                 </div>
-                                <div className="col-lg-4">
+                                <div className="col-lg-4 col-12">
                                     <div className="dropdown-column-title">
-                                        <i className="fas fa-hands-helping me-1"></i> Student Services
+                                        <i className="fas fa-hands-helping me-2"></i> Student Services
                                     </div>
-                                    <Link className="dropdown-item" to="/students/computing-services" onClick={closeNav}>Computing & ICT</Link>
-                                    <Link className="dropdown-item" to="/students/university-library" onClick={closeNav}>Library Services</Link>
-                                    <Link className="dropdown-item" to="/students/university-security" onClick={closeNav}>Campus Security</Link>
-                                    <Link className="dropdown-item" to="/students/university-health-services" onClick={closeNav}>Health Services</Link>
-                                    <Link className="dropdown-item" to="/students/financial-aid" onClick={closeNav}>Financial Aid</Link>
-                                    <Link className="dropdown-item" to="/students/religion-and-spirituality" onClick={closeNav}>Chaplaincy & Spiritual Care</Link>
+                                    <Link className="dropdown-item" to="/students/computing-services" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Computing & ICT
+                                    </Link>
+                                    <Link className="dropdown-item" to="/students/university-library" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Library Services
+                                    </Link>
+                                    <Link className="dropdown-item" to="/students/university-security" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Campus Security
+                                    </Link>
+                                    <Link className="dropdown-item" to="/students/university-health-services" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Health Services
+                                    </Link>
+                                    <Link className="dropdown-item" to="/students/financial-aid" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Financial Aid
+                                    </Link>
+                                    <Link className="dropdown-item" to="/students/religion-and-spirituality" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Chaplaincy & Spiritual
+                                    </Link>
                                 </div>
-                                <div className="col-lg-4">
+                                <div className="col-lg-4 col-12">
                                     <div className="dropdown-column-title">
-                                        <i className="fas fa-external-link-alt me-1"></i> Important Links
+                                        <i className="fas fa-external-link-alt me-2"></i> Important Links
                                     </div>
-                                    <Link className="dropdown-item" to="/students/dean-of-students" onClick={closeNav}>Dean of Students</Link>
-                                    <Link className="dropdown-item" to="/students/admission-lists" onClick={closeNav}>Admission Lists</Link>
-                                    <Link className="dropdown-item" to="/students/graduation-requirements" onClick={closeNav}>Graduation Requirements</Link>
+                                    <Link className="dropdown-item" to="/students/dean-of-students" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Dean of Students
+                                    </Link>
+                                    <Link className="dropdown-item" to="/students/admission-lists" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Admission Lists
+                                    </Link>
+                                    <Link className="dropdown-item" to="/students/graduation-requirements" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Graduation Requirements
+                                    </Link>
                                     <Link className="dropdown-item fw-bold text-success" to="/login" onClick={closeNav}>
-                                        <i className="fas fa-key me-1"></i> Student Portal Login
+                                        <i className="fas fa-key me-2 text-warning"></i> Student Portal Login
                                     </Link>
                                 </div>
                             </div>
@@ -238,34 +354,52 @@ export default function Navbar() {
                         >
                             Admissions
                         </a>
-                        <div className={`dropdown-menu dropdown-mega ${activeDropdown === 'admissions' ? 'show' : ''}`}>
+                        <div className={`dropdown-menu dropdown-mega dropdown-align-right ${activeDropdown === 'admissions' ? 'show' : ''}`}>
                             <div className="row g-3">
-                                <div className="col-lg-4">
+                                <div className="col-lg-4 col-12">
                                     <div className="dropdown-column-title">
-                                        <i className="fas fa-layer-group me-1"></i> Study Programs
+                                        <i className="fas fa-layer-group me-2"></i> Study Programs
                                     </div>
-                                    <Link className="dropdown-item" to="/admissions/undergraduate-courses" onClick={closeNav}>Certificate Courses</Link>
-                                    <Link className="dropdown-item" to="/admissions/diploma-courses" onClick={closeNav}>Diploma Programmes</Link>
-                                    <Link className="dropdown-item" to="/admissions/short-courses" onClick={closeNav}>Short & Skill Courses</Link>
-                                </div>
-                                <div className="col-lg-4">
-                                    <div className="dropdown-column-title">
-                                        <i className="fas fa-clipboard-check me-1"></i> Entry Requirements
-                                    </div>
-                                    <Link className="dropdown-item" to="/admissions/admission-requirements" onClick={closeNav}>Admission Requirements</Link>
-                                    <Link className="dropdown-item" to="/admissions/fees-structure" onClick={closeNav}>Fees Structure</Link>
-                                    <Link className="dropdown-item" to="/admissions/call-for-application" onClick={closeNav}>Call for Applications</Link>
-                                    <Link className="dropdown-item" to="/admissions/application-form" onClick={closeNav}>Download Application Forms</Link>
-                                </div>
-                                <div className="col-lg-4">
-                                    <div className="dropdown-column-title">
-                                        <i className="fas fa-laptop me-1"></i> How to Apply
-                                    </div>
-                                    <Link className="dropdown-item fw-bold text-primary" to="/admissions/apply" onClick={closeNav}>
-                                        <i className="fas fa-paper-plane me-1"></i> Apply Online
+                                    <Link className="dropdown-item" to="/admissions/undergraduate-courses" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Certificate Courses
                                     </Link>
-                                    <Link className="dropdown-item" to="/admissions/online-application-guidelines" onClick={closeNav}>Application Guidelines</Link>
-                                    <Link className="dropdown-item" to="/admissions/scholarships" onClick={closeNav}>Scholarships & Bursaries</Link>
+                                    <Link className="dropdown-item" to="/admissions/diploma-courses" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Diploma Programmes
+                                    </Link>
+                                    <Link className="dropdown-item" to="/admissions/short-courses" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Short & Skill Courses
+                                    </Link>
+                                </div>
+                                <div className="col-lg-4 col-12">
+                                    <div className="dropdown-column-title">
+                                        <i className="fas fa-clipboard-check me-2"></i> Entry Requirements
+                                    </div>
+                                    <Link className="dropdown-item" to="/admissions/admission-requirements" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Admission Requirements
+                                    </Link>
+                                    <Link className="dropdown-item" to="/admissions/fees-structure" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Fees Structure
+                                    </Link>
+                                    <Link className="dropdown-item" to="/admissions/call-for-application" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Call for Applications
+                                    </Link>
+                                    <Link className="dropdown-item" to="/admissions/application-form" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Download Application Form
+                                    </Link>
+                                </div>
+                                <div className="col-lg-4 col-12">
+                                    <div className="dropdown-column-title">
+                                        <i className="fas fa-laptop me-2"></i> How to Apply
+                                    </div>
+                                    <Link className="dropdown-item fw-bold text-success" to="/admissions/apply" onClick={closeNav}>
+                                        <i className="fas fa-paper-plane me-2 text-warning"></i> Apply Online
+                                    </Link>
+                                    <Link className="dropdown-item" to="/admissions/online-application-guidelines" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Application Guidelines
+                                    </Link>
+                                    <Link className="dropdown-item" to="/admissions/scholarships" onClick={closeNav}>
+                                        <i className="fas fa-chevron-right me-2 text-success" style={{ fontSize: '0.72rem' }}></i> Scholarships & Bursaries
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -282,12 +416,32 @@ export default function Navbar() {
                         >
                             Research
                         </a>
-                        <ul className={`dropdown-menu ${activeDropdown === 'research' ? 'show' : ''}`} style={{ minWidth: '240px' }}>
-                            <li><Link className="dropdown-item" to="/research/grants-office" onClick={closeNav}><i className="fas fa-award me-2 text-muted"></i>Research & Grants Office</Link></li>
-                            <li><Link className="dropdown-item" to="/research/research-innovation" onClick={closeNav}><i className="fas fa-lightbulb me-2 text-muted"></i>Research Innovation Hub</Link></li>
-                            <li><Link className="dropdown-item" to="/research/collaborations" onClick={closeNav}><i className="fas fa-handshake me-2 text-muted"></i>Partnerships & Collaborations</Link></li>
-                            <li><Link className="dropdown-item" to="/research/repository" onClick={closeNav}><i className="fas fa-archive me-2 text-muted"></i>Publications & Repository</Link></li>
-                            <li><Link className="dropdown-item" to="/research/downloads" onClick={closeNav}><i className="fas fa-download me-2 text-muted"></i>Research Downloads</Link></li>
+                        <ul className={`dropdown-menu dropdown-align-right ${activeDropdown === 'research' ? 'show' : ''}`} style={{ minWidth: '260px' }}>
+                            <li>
+                                <Link className="dropdown-item" to="/research/grants-office" onClick={closeNav}>
+                                    <i className="fas fa-award me-2 text-success"></i>Research & Grants Office
+                                </Link>
+                            </li>
+                            <li>
+                                <Link className="dropdown-item" to="/research/research-innovation" onClick={closeNav}>
+                                    <i className="fas fa-lightbulb me-2 text-warning"></i>Research Innovation Hub
+                                </Link>
+                            </li>
+                            <li>
+                                <Link className="dropdown-item" to="/research/collaborations" onClick={closeNav}>
+                                    <i className="fas fa-handshake me-2 text-primary"></i>Partnerships & Collaborations
+                                </Link>
+                            </li>
+                            <li>
+                                <Link className="dropdown-item" to="/research/repository" onClick={closeNav}>
+                                    <i className="fas fa-archive me-2 text-info"></i>Publications & Repository
+                                </Link>
+                            </li>
+                            <li>
+                                <Link className="dropdown-item" to="/research/downloads" onClick={closeNav}>
+                                    <i className="fas fa-download me-2 text-success"></i>Research Downloads
+                                </Link>
+                            </li>
                         </ul>
                     </li>
 

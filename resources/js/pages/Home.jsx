@@ -3,41 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const HERO_IMAGES = [
-    {
-        src: '/images/com.jpg',
-        title: 'Clinical & Medical Training Skills Laboratory',
-        subtitle: 'Hands-on practicals and real-world medical confidence'
-    },
-    {
-        src: '/images/comb.jpg',
-        title: 'Research Tutorials & Academic Coaching',
-        subtitle: 'Strengthening teaching quality and academic success'
-    },
-    {
-        src: '/images/combr.jpg',
-        title: 'Institutional Growth & Capacity Building',
-        subtitle: 'Strategic thinking, management, and leadership skills'
-    },
-    {
-        src: '/images/combri.jpg',
-        title: 'Medical Skills & Clinical Mentorship',
-        subtitle: 'Direct hospital placement and expert mentorship'
-    },
-    {
-        src: '/images/combrid.jpg',
-        title: 'Entrepreneurship & Skills Development',
-        subtitle: 'Practical training for diverse careers and self-employment'
-    },
-    {
-        src: '/images/combridg.jpg',
-        title: 'International Languages & Life Skills',
-        subtitle: 'Russian, Chinese, French, Spanish & Portuguese coaching'
-    },
-    {
-        src: '/images/combridge.jpg',
-        title: 'Mbarara City Campus Facilities',
-        subtitle: 'Nyamityobora, Kakoba Division, 200m off Mbarara-Masaka Highway'
-    },
+    '/images/com.jpg',
+    '/images/comb.jpg',
+    '/images/combr.jpg',
+    '/images/combri.jpg',
+    '/images/combrid.jpg',
+    '/images/combridg.jpg',
+    '/images/combridge.jpg',
 ];
 
 const STATS = [
@@ -145,205 +117,110 @@ export default function Home() {
 
     return (
         <div className="home-page">
-            {/* ── 1. Full-Screen Hero Background Carousel ─────────────────────── */}
-            <section className="hero-fullscreen position-relative" style={{ minHeight: '92vh', overflow: 'hidden' }}>
-                {/* Background image slides */}
-                {HERO_IMAGES.map((img, idx) => (
+            {/* ── 1. Pure Full-Width Hero Image Slider (Only Images, Animating Every 6s, No Overlay Words) ────────────────── */}
+            <section
+                className="hero-image-slider position-relative w-100"
+                style={{
+                    height: 'clamp(360px, 58vh, 620px)',
+                    overflow: 'hidden',
+                    background: '#0a1a12',
+                }}
+            >
+                {/* Image Slides */}
+                {HERO_IMAGES.map((src, idx) => (
                     <div
                         key={idx}
                         style={{
                             position: 'absolute',
                             inset: 0,
                             opacity: idx === activeSlide ? 1 : 0,
-                            transform: idx === activeSlide ? 'scale(1)' : 'scale(1.05)',
-                            transition: 'opacity 1s ease-in-out, transform 1s ease-in-out',
-                            zIndex: 0,
+                            transform: idx === activeSlide ? 'scale(1)' : 'scale(1.04)',
+                            transition: 'opacity 1.2s ease-in-out, transform 1.2s ease-in-out',
+                            zIndex: idx === activeSlide ? 1 : 0,
                         }}
                     >
                         <img
-                            src={img.src}
-                            alt={img.title}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                            src={src}
+                            alt={`Campus highlight ${idx + 1}`}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                objectPosition: 'center',
+                                display: 'block',
+                            }}
                         />
                     </div>
                 ))}
 
-                {/* Dark overlay for text readability */}
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,60,30,0.62) 0%, rgba(0,40,20,0.75) 60%, rgba(0,20,10,0.88) 100%)', zIndex: 1 }} />
-
-                {/* Hero Content */}
-                <div className="container position-relative py-5" style={{ zIndex: 2, minHeight: '92vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    <div className="row align-items-center g-4">
-                        <div className="col-lg-8 col-12 text-white">
-                            <div className="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3 animate-fadeInUp" style={{ background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(6px)', animationDelay: '0.1s' }}>
-                                <i className="fas fa-certificate text-warning"></i>
-                                <span className="small fw-semibold">Accredited by Uganda Registration Services Bureau (URSB)</span>
-                            </div>
-
-                            <h1 className="fw-bold mb-2 text-white animate-fadeInUp" style={{ fontSize: 'clamp(1.9rem, 4vw, 3.2rem)', lineHeight: 1.15, textShadow: '0 2px 12px rgba(0,0,0,0.5)', animationDelay: '0.2s' }}>
-                                COMBRIDGE INSTITUTE OF<br />HEALTH MANAGEMENT SCIENCES
-                            </h1>
-
-                            <h5 className="text-warning fw-semibold mb-2 animate-fadeInUp" style={{ fontSize: '1.1rem', animationDelay: '0.35s' }}>
-                                A subsidiary arm of Combridge Centre for Polytechnic Studies
-                            </h5>
-
-                            <p className="fw-bold mb-3 animate-fadeInUp" style={{ color: '#ffdd57', fontStyle: 'italic', fontSize: '1.35rem', textShadow: '0 1px 6px rgba(0,0,0,0.4)', animationDelay: '0.45s' }}>
-                                "Enriching The Future and Potentials"
-                            </p>
-
-                            <p className="lead opacity-95 mb-4 animate-fadeInUp" style={{ fontSize: '1.05rem', maxWidth: '640px', lineHeight: 1.7, textShadow: '0 1px 4px rgba(0,0,0,0.3)', animationDelay: '0.55s' }}>
-                                Specialized in Advisory, Consultancy, and World-Class Training in Health Sciences, Medical Skills, Life Skills, and Institutional Capacity Building in Mbarara City, Uganda.
-                            </p>
-
-                            {/* Programme Finder */}
-                            <div className="card shadow-lg p-3 bg-white text-dark rounded-4 mb-4 animate-fadeInUp" style={{ maxWidth: '620px', animationDelay: '0.65s' }}>
-                                <div className="card-body p-1">
-                                    <h6 className="fw-bold mb-2 text-success">
-                                        <i className="fas fa-search me-2"></i>Find Courses & Training Programmes
-                                    </h6>
-                                    <form onSubmit={handleSearch} className="row g-2 align-items-center">
-                                        <div className="col-md-5 col-12">
-                                            <select className="form-select form-select-sm" value={searchLevel} onChange={(e) => setSearchLevel(e.target.value)}>
-                                                <option value="">All Programmes</option>
-                                                <option value="undergraduate-courses">Clinical & Medical Training</option>
-                                                <option value="diploma-courses">Management & Health Diplomas</option>
-                                                <option value="short-courses">Life Skills & Foreign Languages</option>
-                                                <option value="scholarships">Advisory & Consultancy</option>
-                                            </select>
-                                        </div>
-                                        <div className="col-md-4 col-12">
-                                            <input type="text" className="form-control form-control-sm" placeholder="e.g. Clinical, Nursing, French" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-                                        </div>
-                                        <div className="col-md-3 col-12">
-                                            <button type="submit" className="btn btn-sm btn-success w-100 fw-bold">Explore</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
-                            {/* CTA Buttons */}
-                            <div className="d-flex flex-wrap gap-2 pt-1 animate-fadeInUp" style={{ animationDelay: '0.75s' }}>
-                                <Link to="/admissions/apply" className="btn btn-warning px-4 py-2 fw-bold text-dark shadow-sm">
-                                    <i className="fas fa-paper-plane me-2"></i>Apply Online Now
-                                </Link>
-                                <Link to="/contact" className="btn btn-outline-light px-4 py-2 fw-semibold">
-                                    <i className="fas fa-phone-alt me-2"></i>Contact Admissions
-                                </Link>
-                                {isAuthenticated ? (
-                                    <Link to="/student/dashboard" className="btn btn-light px-4 py-2 fw-semibold text-success">
-                                        <i className="fas fa-user-circle me-2"></i>My Portal
-                                    </Link>
-                                ) : (
-                                    <Link to="/login" className="btn btn-outline-light px-4 py-2 fw-semibold">
-                                        <i className="fas fa-lock me-2"></i>Student Portal
-                                    </Link>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Right Column Interactive Photo Card Carousel (Matches User Uploaded Screenshot) */}
-                        <div className="col-lg-5 col-12 ms-auto">
-                            <div className="card border-0 shadow-lg rounded-4 overflow-hidden position-relative bg-dark text-white" style={{ border: '3px solid rgba(255,255,255,0.25)', boxShadow: '0 12px 36px rgba(0,0,0,0.5)' }}>
-                                {/* Slide Image Window */}
-                                <div className="position-relative" style={{ height: '330px', overflow: 'hidden', background: '#000' }}>
-                                    <img
-                                        src={HERO_IMAGES[activeSlide].src}
-                                        alt={HERO_IMAGES[activeSlide].title}
-                                        key={activeSlide}
-                                        style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'cover',
-                                            display: 'block',
-                                            transition: 'transform 0.8s ease-in-out',
-                                        }}
-                                    />
-
-                                    {/* PHOTO X OF 7 Badge */}
-                                    <div className="position-absolute top-0 start-0 m-3 z-3">
-                                        <span className="badge bg-success text-uppercase px-3 py-2 fw-bold shadow-sm" style={{ fontSize: '0.78rem', letterSpacing: '0.5px', background: '#006837' }}>
-                                            PHOTO {activeSlide + 1} OF {HERO_IMAGES.length}
-                                        </span>
-                                    </div>
-
-                                    {/* Left Arrow Button */}
-                                    <button
-                                        className="btn btn-dark rounded-circle position-absolute top-50 start-0 translate-middle-y ms-2 shadow"
-                                        style={{ width: 38, height: 38, opacity: 0.85, padding: 0, zIndex: 10, background: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.3)' }}
-                                        onClick={prevSlide}
-                                        aria-label="Previous photo"
-                                    >
-                                        <i className="fas fa-chevron-left text-white"></i>
-                                    </button>
-
-                                    {/* Right Arrow Button */}
-                                    <button
-                                        className="btn btn-dark rounded-circle position-absolute top-50 end-0 translate-middle-y me-2 shadow"
-                                        style={{ width: 38, height: 38, opacity: 0.85, padding: 0, zIndex: 10, background: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.3)' }}
-                                        onClick={nextSlide}
-                                        aria-label="Next photo"
-                                    >
-                                        <i className="fas fa-chevron-right text-white"></i>
-                                    </button>
-                                </div>
-
-                                {/* Caption & Indicators Box below image */}
-                                <div className="p-3" style={{ background: '#111827', borderTop: '2px solid rgba(255,255,255,0.1)' }}>
-                                    <h6 className="fw-bold text-white mb-1" style={{ fontSize: '1rem' }}>
-                                        {HERO_IMAGES[activeSlide].title}
-                                    </h6>
-                                    <p className="text-white-50 mb-2 small" style={{ fontSize: '0.84rem' }}>
-                                        {HERO_IMAGES[activeSlide].subtitle}
-                                    </p>
-
-                                    {/* Dot Indicators */}
-                                    <div className="d-flex gap-1.5 justify-content-center pt-1">
-                                        {HERO_IMAGES.map((_, idx) => (
-                                            <button
-                                                key={idx}
-                                                onClick={() => setActiveSlide(idx)}
-                                                style={{
-                                                    width: idx === activeSlide ? 26 : 8,
-                                                    height: 8,
-                                                    borderRadius: 4,
-                                                    background: idx === activeSlide ? '#ffdd57' : 'rgba(255,255,255,0.35)',
-                                                    border: 'none',
-                                                    padding: 0,
-                                                    cursor: 'pointer',
-                                                    transition: 'all 0.3s ease',
-                                                }}
-                                                aria-label={`Go to slide ${idx + 1}`}
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Prev/Next Controls */}
+                {/* Subtle Left Arrow */}
                 <button
-                    className="btn btn-dark position-absolute top-50 start-0 translate-middle-y ms-3 rounded-circle shadow"
-                    style={{ width: 42, height: 42, zIndex: 10, padding: 0, opacity: 0.8 }}
+                    className="btn position-absolute top-50 start-0 translate-middle-y ms-3 rounded-circle d-flex align-items-center justify-content-center shadow-lg"
+                    style={{
+                        width: 44,
+                        height: 44,
+                        zIndex: 10,
+                        padding: 0,
+                        background: 'rgba(0,0,0,0.55)',
+                        border: '1px solid rgba(255,255,255,0.4)',
+                        backdropFilter: 'blur(4px)',
+                        color: '#ffffff',
+                    }}
                     onClick={prevSlide}
-                    aria-label="Previous"
+                    aria-label="Previous Slide"
                 >
-                    <i className="fas fa-chevron-left text-white"></i>
+                    <i className="fas fa-chevron-left"></i>
                 </button>
+
+                {/* Subtle Right Arrow */}
                 <button
-                    className="btn btn-dark position-absolute top-50 end-0 translate-middle-y me-3 rounded-circle shadow"
-                    style={{ width: 42, height: 42, zIndex: 10, padding: 0, opacity: 0.8 }}
+                    className="btn position-absolute top-50 end-0 translate-middle-y me-3 rounded-circle d-flex align-items-center justify-content-center shadow-lg"
+                    style={{
+                        width: 44,
+                        height: 44,
+                        zIndex: 10,
+                        padding: 0,
+                        background: 'rgba(0,0,0,0.55)',
+                        border: '1px solid rgba(255,255,255,0.4)',
+                        backdropFilter: 'blur(4px)',
+                        color: '#ffffff',
+                    }}
                     onClick={nextSlide}
-                    aria-label="Next"
+                    aria-label="Next Slide"
                 >
-                    <i className="fas fa-chevron-right text-white"></i>
+                    <i className="fas fa-chevron-right"></i>
                 </button>
+
+                {/* Subtle Dot Indicators at Bottom */}
+                <div
+                    className="position-absolute bottom-0 start-50 translate-middle-x mb-3 d-flex gap-2 align-items-center px-3 py-1.5 rounded-pill"
+                    style={{
+                        zIndex: 10,
+                        background: 'rgba(0,0,0,0.5)',
+                        backdropFilter: 'blur(6px)',
+                    }}
+                >
+                    {HERO_IMAGES.map((_, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => setActiveSlide(idx)}
+                            style={{
+                                width: idx === activeSlide ? 24 : 8,
+                                height: 8,
+                                borderRadius: 4,
+                                background: idx === activeSlide ? '#ffdd57' : 'rgba(255,255,255,0.5)',
+                                border: 'none',
+                                padding: 0,
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                            }}
+                            aria-label={`Go to slide ${idx + 1}`}
+                        />
+                    ))}
+                </div>
             </section>
 
-
-            {/* ── Official Contact Details Strip (From Image 2) ────────────────── */}
+            {/* ── Official Contact Details Strip ─────────────────────────────────── */}
             <section className="py-3 text-white" style={{ background: '#006837', borderBottom: '3px solid #ffdd57' }}>
                 <div className="container">
                     <div className="row g-3 align-items-center text-center text-md-start">
@@ -386,7 +263,65 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* ── 2. Official Institutional Profile (From Image 2) ────────────────── */}
+            {/* ── Quick Action & Course Search Bar ─────────────────────────────── */}
+            <section className="py-4 bg-light border-bottom">
+                <div className="container">
+                    <div className="row g-3 align-items-center justify-content-between">
+                        <div className="col-lg-7 col-12">
+                            <form onSubmit={handleSearch} className="card border-0 shadow-sm rounded-4 p-2 bg-white">
+                                <div className="row g-2 align-items-center">
+                                    <div className="col-md-5 col-12">
+                                        <select
+                                            className="form-select form-select-sm fw-semibold"
+                                            value={searchLevel}
+                                            onChange={(e) => setSearchLevel(e.target.value)}
+                                        >
+                                            <option value="">All Programmes</option>
+                                            <option value="undergraduate-courses">Clinical & Medical Training</option>
+                                            <option value="diploma-courses">Management & Health Diplomas</option>
+                                            <option value="short-courses">Life Skills & Foreign Languages</option>
+                                            <option value="scholarships">Advisory & Consultancy</option>
+                                        </select>
+                                    </div>
+                                    <div className="col-md-4 col-12">
+                                        <input
+                                            type="text"
+                                            className="form-control form-control-sm"
+                                            placeholder="Search courses..."
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="col-md-3 col-12">
+                                        <button type="submit" className="btn btn-sm btn-success w-100 fw-bold">
+                                            <i className="fas fa-search me-1"></i> Find Courses
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div className="col-lg-5 col-12 d-flex justify-content-lg-end gap-2 flex-wrap">
+                            <Link to="/admissions/apply" className="btn btn-warning px-3 py-2 fw-bold text-dark shadow-sm">
+                                <i className="fas fa-paper-plane me-1"></i> Apply Online
+                            </Link>
+                            <Link to="/contact" className="btn btn-outline-success px-3 py-2 fw-semibold">
+                                <i className="fas fa-phone-alt me-1"></i> Contact Admissions
+                            </Link>
+                            {isAuthenticated ? (
+                                <Link to="/student/dashboard" className="btn btn-success px-3 py-2 fw-semibold">
+                                    <i className="fas fa-user-circle me-1"></i> My Portal
+                                </Link>
+                            ) : (
+                                <Link to="/login" className="btn btn-outline-secondary px-3 py-2 fw-semibold">
+                                    <i className="fas fa-lock me-1"></i> Portal Login
+                                </Link>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── 2. Official Institutional Profile ──────────────────────────────── */}
             <section className="py-5 bg-white">
                 <div className="container">
                     {/* Background Header Pill */}
@@ -405,7 +340,7 @@ export default function Home() {
                         </div>
                     </div>
 
-                    {/* Two-Column Framework matching Image 2 */}
+                    {/* Two-Column Framework */}
                     <div className="row g-4 pt-2">
                         {/* Left Column: Advisory & Consultancy Services */}
                         <div className="col-lg-6">
